@@ -70,8 +70,6 @@ data.update = () => {
             }
         });
     }else if(data.distribution == 'weighted') {
-        var totalCharCount = (data.width - data.spacing * (chars.length - 1)) / data.margin;
-
         var copyFactors = [];
         chars.forEach((char, index) => {
             var copyFactor = Math.abs(data.center - (index / chars.length));
@@ -82,7 +80,7 @@ data.update = () => {
             cSum += c;
         });
         chars.forEach((char, index) => {
-            var charSpace = Math.round((copyFactors[index] / cSum) * (data.width - (chars.length - 1) * data.spacing));
+            var charSpace = Math.round((copyFactors[index] / cSum) * (data.width - (chars.length - 1) * data.spacing) - 20);
             var copyCount = Math.round((charSpace - char.width()) / data.margin) - 1;
             var group = [];
             charGroups.push(group);
@@ -113,8 +111,8 @@ data.update();
 
 var gui = new dat.GUI();
 gui.add(data, 'update');
-// gui.add(data, 'width', 300, 1200).onChange(data.update);
-gui.add(data, 'height', 100, 600).onChange(data.update);
+gui.add(data, 'width', 300, 1200).onChange(data.update);
+// gui.add(data, 'height', 100, 600).onChange(data.update);
 gui.add(data, 'spacing', 1, 50).onChange(data.update);
 gui.add(data, 'margin', 1, 50).onChange(data.update);
 gui.add(data, 'strokeWidth', .1, 5).onChange(data.update);
