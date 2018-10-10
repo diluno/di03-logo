@@ -6,7 +6,7 @@ var data = {
     strokeWidth: 1,
     textColor: '#000000',
     bgColor: '#ffffff',
-    distribution: 'random',
+    distribution: 'uniform',
     center: .5,
     update: null
 };
