@@ -6,7 +6,7 @@ var data = {
     strokeWidth: 1,
     textColor: '#000000',
     bgColor: '#ffffff',
-    distribution: 'weighted',
+    distribution: 'random',
     center: .5,
     update: null
 };
@@ -111,12 +111,11 @@ data.update();
 
 var gui = new dat.GUI();
 gui.add(data, 'update');
-gui.add(data, 'width', 300, 1200).onChange(data.update);
-// gui.add(data, 'height', 100, 600).onChange(data.update);
-gui.add(data, 'spacing', 1, 50).onChange(data.update);
-gui.add(data, 'margin', 1, 50).onChange(data.update);
-gui.add(data, 'strokeWidth', .1, 5).onChange(data.update);
 gui.add(data, 'distribution', ['uniform', 'random', 'weighted']).onChange(data.update);
+gui.add(data, 'width', 300, 1500).onChange(data.update);
+gui.add(data, 'spacing', 1, 50).onChange(data.update);
+gui.add(data, 'margin', 1, 50).step(1).onChange(data.update);
+gui.add(data, 'strokeWidth', .1, 5).onChange(data.update);
 gui.add(data, 'center', 0, 1).onChange(data.update);
 gui.addColor(data, 'textColor').onChange(data.update);
 gui.addColor(data, 'bgColor').onChange(data.update);
