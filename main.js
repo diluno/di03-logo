@@ -6,7 +6,8 @@ var data = {
     strokeWidth: 1,
     textColor: '#000000',
     bgColor: '#ffffff',
-    distribution: 'random',
+    distribution: 'weighted',
+    center: .5,
     update: null
 };
 
@@ -45,7 +46,7 @@ data.update = () => {
                 group.push(char.clone());
             }
         });
-    }else{
+    }else if(data.distribution == 'random') {
         var distribution = [];
         for(var i=0; i<chars.length; i++) {
             distribution.push(Math.random()+.2);
@@ -56,6 +57,32 @@ data.update = () => {
         });
         chars.forEach((char, index) => {
             var charSpace = Math.round((distribution[index] / distSum) * (data.width - (chars.length - 1) * data.spacing));
+            var copyCount = Math.round((charSpace - char.width()) / data.margin) - 1;
+            var group = [];
+            charGroups.push(group);
+            group.push(char);
+            char.attr({
+                'stroke-width': data.strokeWidth + 'px',
+                'stroke': data.textColor
+            });
+            for (var i = 0; i < copyCount; i++) {
+                group.push(char.clone());
+            }
+        });
+    }else if(data.distribution == 'weighted') {
+        var totalCharCount = (data.width - data.spacing * (chars.length - 1)) / data.margin;
+
+        var copyFactors = [];
+        chars.forEach((char, index) => {
+            var copyFactor = Math.abs(data.center - (index / chars.length));
+            copyFactors.push(copyFactor);
+        });
+        var cSum = 0;
+        copyFactors.forEach((c) => {
+            cSum += c;
+        });
+        chars.forEach((char, index) => {
+            var charSpace = Math.round((copyFactors[index] / cSum) * (data.width - (chars.length - 1) * data.spacing));
             var copyCount = Math.round((charSpace - char.width()) / data.margin) - 1;
             var group = [];
             charGroups.push(group);
@@ -91,7 +118,8 @@ gui.add(data, 'height', 100, 600).onChange(data.update);
 gui.add(data, 'spacing', 1, 50).onChange(data.update);
 gui.add(data, 'margin', 1, 50).onChange(data.update);
 gui.add(data, 'strokeWidth', .1, 5).onChange(data.update);
-gui.add(data, 'distribution', ['uniform', 'random']).onChange(data.update);
+gui.add(data, 'distribution', ['uniform', 'random', 'weighted']).onChange(data.update);
+gui.add(data, 'center', 0, 1).onChange(data.update);
 gui.addColor(data, 'textColor').onChange(data.update);
 gui.addColor(data, 'bgColor').onChange(data.update);
 
