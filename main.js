@@ -11,6 +11,17 @@ var data = {
     update: null
 };
 
+
+var updateStyles = function () {
+    var chars = SVG.select('#artboard path');
+    chars.attr({
+        'stroke-width': data.strokeWidth + 'px',
+        'stroke': data.textColor
+    });
+    var el = document.querySelector('#logo');
+    el.style.backgroundColor = data.bgColor;
+}
+
 data.update = () => {
 
     var el = document.querySelector('#logo');
@@ -38,10 +49,6 @@ data.update = () => {
             var group = [];
             charGroups.push(group);
             group.push(char);
-            char.attr({
-                'stroke-width': data.strokeWidth + 'px',
-                'stroke': data.textColor
-            });
             for (var i = 0; i < copyCount; i++) {
                 group.push(char.clone());
             }
@@ -61,10 +68,6 @@ data.update = () => {
             var group = [];
             charGroups.push(group);
             group.push(char);
-            char.attr({
-                'stroke-width': data.strokeWidth + 'px',
-                'stroke': data.textColor
-            });
             for (var i = 0; i < copyCount; i++) {
                 group.push(char.clone());
             }
@@ -85,10 +88,6 @@ data.update = () => {
             var group = [];
             charGroups.push(group);
             group.push(char);
-            char.attr({
-                'stroke-width': data.strokeWidth + 'px',
-                'stroke': data.textColor
-            });
             for (var i = 0; i < copyCount; i++) {
                 group.push(char.clone());
             }
@@ -106,6 +105,8 @@ data.update = () => {
         posX += charWidth + (data.spacing - data.margin);
     });
 
+    updateStyles();
+
 };
 data.update();
 
@@ -115,10 +116,10 @@ gui.add(data, 'distribution', ['uniform', 'random', 'weighted']).onChange(data.u
 gui.add(data, 'width', 300, 1500).onChange(data.update);
 gui.add(data, 'spacing', 1, 50).onChange(data.update);
 gui.add(data, 'margin', 1, 50).step(1).onChange(data.update);
-gui.add(data, 'strokeWidth', .1, 5).onChange(data.update);
 gui.add(data, 'center', 0, 1).onChange(data.update);
-gui.addColor(data, 'textColor').onChange(data.update);
-gui.addColor(data, 'bgColor').onChange(data.update);
+gui.add(data, 'strokeWidth', .1, 5).onChange(updateStyles);
+gui.addColor(data, 'textColor').onChange(updateStyles);
+gui.addColor(data, 'bgColor').onChange(updateStyles);
 
 
 var btn = document.querySelector('#codebutton');
