@@ -125,7 +125,20 @@ gui.addColor(data, 'bgColor').onChange(updateStyles);
 
 
 var btn = document.querySelector('#codebutton');
+var downloadBtn = document.querySelector('#downloadbutton');
 var code = document.querySelector('#code');
 btn.addEventListener('click', (e) => {
     code.innerText = draw.svg();
+});
+downloadBtn.addEventListener('click', (e) => {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(draw.svg()));
+    element.setAttribute('download', 'diluno.svg');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 });
